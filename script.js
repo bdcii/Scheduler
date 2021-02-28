@@ -1,8 +1,4 @@
 let displayEl = $('#currentDay');
-var input = $("<input />");
-
-var taskEl = document.querySelector("#task");
-
 
 
 setInterval(function(){
@@ -12,52 +8,36 @@ setInterval(function(){
 
 
 
-renderSavedTask();
+// A loop to print my planner rows(time designation, text field, save button)
+for (i = 0; i < 9; i++) {
 
-function renderSavedTask() {
-    var task = localStorage.getItem("task");
- 
+  //sets a variable for the row, creating a div element and adding the row class from CSS
+  var rowBlock = $('<div>').addClass('row');
+
+  //Creates a variable for the time block, which creates a div element, adds css hour class, and a column width set via Bootstrap.
+  //The initial time/text is set to 9AM. using moment.js.  Each time the loop runs, it will add an hour to the 9AM start time(first loop is still 9, as i is set to 0).
+
+  //a data-time attribute is also created/set using the same format as the text of the timeblock.  The data-time attribute will be utilized for localStorage.
+  var timeBlock = $('<div>').addClass('hour col-md-1').text(moment('9:00 AM', 'hh:mm A').add(i, 'hours').format('hA'));
+  timeBlock.attr('data-time', moment('9:00 AM', 'hh:mm A').add(i, 'hours').format('hA'));
+
+
+  //This creates a variable for the task section of the planner.  Creates a text html element, and sets column width via Bootstrap
+  var taskBlock = $('<textarea>').addClass('col-md-10');
+
+
+  //create a variable for the save block/button.  Creates html element for the button, adds pre-existing css class, sets columb width via boostrap,
+  var saveButton = $('<button>').addClass('saveBtn col-md-1').html('<i class="fas fa-save"></i>');
+
+  // The code below ensures the planner displays properly. Appends row to container
+  $('.container').append(rowBlock);
+
+  //appends timeBlock to the row
+  $(rowBlock).append(timeBlock);
+
+  //sets the taskBlock AFTER the timeBlock  ***I found that using .append for this didn't work as it did in line 35.
+  $(timeBlock).after(taskBlock);
   
-    if (!task) {
-      return;
-    }
-
-
-  
-    taskEl.textContent = task;
-  }
-
-var container = $('.container')
-var table = $('<table>')
-container.append(table);
-
-for (i = 9; i < 18; i++){
-    var tr = $('<tr>');
-    var tdHour = $('<td>');
-    var tdTask = $('<td>');
-    var tdSave = $('<td>');
-    tdHour.text(i)
-    tr.append(tdHour)
-    tr.append(tdTask)
-    tr.append(tdSave)
-    table.append(tr)
-
-    $(tr).addClass("row time-block" );
-    $(tdHour).addClass('hour col-xl-2');
-     $(tdTask).addClass('col-xl-8 description textarea').append("<textarea id='#task'></textarea>")
-    $(tdSave).addClass('saveBtn fa fa-save col-xl-2 saveBtn i:hover').append("<button id='#save'></button")
-}
-
-var saveButton = document.querySelector("#save");
-
-saveButton.addEventListener('click', function(event){
-    event.preventDefault();
-
-    var task = document.querySelector("#task").value;
-
-    localStorage.setItem("task", task);
-
-
-});
-
-
+  //sets the saveButton to display AFTER the taskBlock.  had to use .after, as .append caused display issues in the DOM
+  $(taskBlock).after(saveButton);
+};
