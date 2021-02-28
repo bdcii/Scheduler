@@ -8,9 +8,11 @@ setInterval(function(){
 }, 1000)
 
 
+//code runs as soon as DOm is fully loaded
 $(document).ready(function() {
 
-  // This loop is to pull the saved data from local storage.
+  // This loop is to pull the saved data from local storage. 
+  //it places the .hour class items in an array, then cycles through and "gets" saved text and places in corresponding time block via data-time attribute.
   hourArr = $('.hour').toArray();
   for (i = 0; i < hourArr.length; i++) {
       $(hourArr[i]).siblings('textarea').text(localStorage.getItem($(hourArr[i]).attr('data-time')));
@@ -50,6 +52,23 @@ for (i = 0; i < 9; i++) {
   
   //sets the saveButton to display AFTER the taskBlock.  had to use .after, as .append caused display issues in the DOM
   $(taskBlock).after(saveButton);
+
+
+  //code below is to determine if the hour block is in the past, present, or future.  
+   //the if/else statement uses the same 'i' variable from the for loop.  moment.js is pulling the current time and compare it to the time block.
+
+   //The current hour will have a red block
+  if (now.isSame(moment('9:00 AM', 'hh:mm A').add(i, 'hours'), 'hour')) {
+    $(taskBlock).addClass('present');
+
+    //any hours in the future will display in a green block
+} else if (now.isBefore(moment('9:00 AM', 'hh:mm A').add(i, 'hours'), 'hour')) {
+    $(taskBlock).addClass('future');
+
+    //any hours in the past will display in a red block
+} else if (now.isAfter(moment('9:00 AM', 'hh:mm A').add(i, 'hours'), 'hour')) {
+    $(taskBlock).addClass('past');
+}
 
 }
 
