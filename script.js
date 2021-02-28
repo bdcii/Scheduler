@@ -1,6 +1,7 @@
 let displayEl = $('#currentDay');
 
 
+//This function displays the current time at the top of the page
 setInterval(function(){
     let currentTime = moment();
     displayEl.text(currentTime.format('MMMM Do YYYY, h:mm:ss a'));
@@ -26,7 +27,8 @@ for (i = 0; i < 9; i++) {
   var taskBlock = $('<textarea>').addClass('col-md-10');
 
 
-  //create a variable for the save block/button.  Creates html element for the button, adds pre-existing css class, sets columb width via boostrap,
+  //create a variable for the save block/button.  
+  //Creates html element for the button, adds pre-existing css class, sets column width via bootstrap, adds button icon via Google Fonts
   var saveButton = $('<button>').addClass('saveBtn col-md-1').html('<i class="fas fa-save"></i>');
 
   // The code below ensures the planner displays properly. Appends row to container
@@ -37,7 +39,7 @@ for (i = 0; i < 9; i++) {
 
   //sets the taskBlock AFTER the timeBlock  ***I found that using .append for this didn't work as it did in line 35.
   $(timeBlock).after(taskBlock);
-  
+
   //sets the saveButton to display AFTER the taskBlock.  had to use .after, as .append caused display issues in the DOM
   $(taskBlock).after(saveButton);
 };
